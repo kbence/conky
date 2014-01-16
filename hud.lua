@@ -7,6 +7,7 @@ require 'math'
 require 'json'
 require 'imlib2'
 require 'string'
+require 'io'
 
 -- Extend tostring to work better on tables
 -- make it output in {a,b,c...;x1=y1,x2=y2...} format; use nexti
@@ -551,6 +552,24 @@ local bar_stops = {[0] = color(0x3fffffff), [0.60] = color(0x7fffff00), [1] = co
 
 local last_draw = 0
 
+function display_file(pos, file, line_height)
+	local f, err = io.open(file, "r")
+	local offset = 0
+	local content
+
+	if f then
+		while true do
+			content = f:read("*line")
+			if not content then break end
+
+			text(pos.x, pos.y + offset, tostring(content))
+			offset = offset + line_height
+		end
+	end
+
+	f:close()
+end
+
 function conky_main()
 	if conky_window == nil or conky_parse("${cpu cpu0}") == nil then return end
 
@@ -558,8 +577,7 @@ function conky_main()
 	if current_time - last_draw < 1 then return end
 	last_draw = current_time
 
-	cairo() -- init cairo firs
-	--clear()
+	cairo()
 
 	fill(rect(0,0,_width,_height), linear_gradient(
 		{0, 0},
@@ -620,9 +638,15 @@ function conky_main()
 	draw_ring({pos.x, pos.y}, define_ring(homedir_gradient, color(0x3f000000), 87, 90, PI/4,    -PI/4, true ), "${fs_used_perc /home}")
 	draw_ring({pos.x, pos.y}, define_ring(battery_gradient, color(0x3f000000), 87, 90, 3*PI/4, 5*PI/4, false), "${battery_percent BAT0}")
 
-
-	local pos = {x = 450, y = 80}
+	local pos = {x = 25, y = 60}
 	text_font("Josefine Sans Std", 18, false)
+	text(pos.x, pos.y, "Tasks")
+	text_font("DejaVu Sans", 12, false)
+	display_file({x=pos.x, y=pos.y + 18}, "/home/bnc/tasks.txt", 16)
+
+	pos = {x = 450, y = 80}
+	text_font("Josefine Sans Std", 18, false)
+
 	text(pos.x, pos.y, "Top")
 
 	text_font("Unispace", 12)
