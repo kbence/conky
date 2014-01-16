@@ -584,38 +584,7 @@ function conky_main()
 	text(683, 65, "${time %A, %d %B, %Y}", CENTER)
 	text_font(nil, nil, false)
 
---	text_font("Josefin Sans Std", 20)
---	text_color(0xffffffff)
---	text_shadow(2, 2)
---
---	text(140, 60, "CPU")
---	text_font("Unispace", 12)
---	text(35, 85, "0 ${cpu cpu0}%")
---	text(35, 115, "1 ${cpu cpu1}%")
---	text(35, 145, "2 ${cpu cpu2}%")
---	text(35, 175, "3 ${cpu cpu3}%")
-
 	local bar_look = define_bar(linear_gradient({80, 0}, {230, 0}, bar_stops), color(0x3f000000), {150, 4})
-
---	draw_bar({80, 80}, bar_look, "${cpu cpu0}")
---	draw_bar({80, 110}, bar_look, "${cpu cpu2}")
---	draw_bar({80, 140}, bar_look, "${cpu cpu3}")
---	draw_bar({80, 170}, bar_look, "${cpu cpu4}")
---
---	text_font("Josefin Sans Std", 20)
---	text(360, 60, "Memory")
---	text_font("Unispace", 12)
---	text(260, 85,  "mem" ); text(290, 85,  "$memperc%")
---	text(260, 115, "swap"); text(290, 115, "$swapperc%")
---
---	local bar_look = define_bar(linear_gradient({300, 0}, {450, 0}, bar_stops), color(0x3f000000), {150, 4})
---
---	draw_bar({325, 80}, bar_look, "$memperc")
---	draw_bar({325, 110}, bar_look, "$swapperc")
---
---	local graph_look = define_graph(linear_gradient({0, 180}, {0, 130}, bar_stops), color(0x3f000000), {215, 50})
---
---	draw_graph("mem graph", {260, 130}, graph_look, "$memperc")
 
 	local dist   = 1
 	local pos    = {x = 1366/2, y = 140}
@@ -635,16 +604,8 @@ function conky_main()
 	text_font("Unispace", 12)
 	text(pos.x + 5, pos.y + 4, temp1 .. "°C")
 	text(pos.x - 5, pos.y + 4, temp2 .. "°C", RIGHT)
-	--text(pos.x + radius.inner, pos.y - radius.inner,     "${cpu cpu0}%")
-	--text(pos.x + radius.inner, pos.y + radius.inner + 8, "${cpu cpu1}%")
-	--text(pos.x - radius.inner, pos.y + radius.inner + 8, "${cpu cpu2}%", RIGHT)
-	--text(pos.x - radius.inner, pos.y - radius.inner,     "${cpu cpu3}%", RIGHT)
 	text_font("Josefin Sans Std", 18, true)
 	text(pos.x, pos.y + 25, "CPU", CENTER)
-
---	local mem_chart = define_chart(color(0xffffffff), color(0x3f000000), {150, 50})
---	draw_chart("mem graph", {1366/2-220, 140}, mem_chart, "$memperc")
---	draw_chart("cpu graph", {1366/2+80, 140}, mem_chart, "$cpu")
 
 	local radial_grad = radial_gradient({pos.x, pos.y}, 60, 85, bar_stops)
 
@@ -654,7 +615,6 @@ function conky_main()
 	local cpu_rad_chart = define_ring_chart(radial_grad, color(0x3f000000), 60, 85, PI - PI/4, PI + PI/4, true)
 	draw_ring_chart("cpu rad chart", {pos.x, pos.y}, cpu_rad_chart, "$cpu")
 
-	--print(parse("${fs_used_perc /home}"))
 	local homedir_gradient = linear_gradient({pos.x, pos.y+63}, {pos.x, pos.y-63}, bar_stops)
 	local battery_gradient = linear_gradient({pos.x, pos.y-63}, {pos.x, pos.y+63}, bar_stops)
 	draw_ring({pos.x, pos.y}, define_ring(homedir_gradient, color(0x3f000000), 87, 90, PI/4,    -PI/4, true ), "${fs_used_perc /home}")
@@ -688,10 +648,6 @@ function conky_main()
 
 	if results then
 		local channel = results.query.results.channel
-		--print(results.query.results.channel.wind)
-		--print(results.query.results.channel.astronomy)
-		--print(results.query.results.channel.item.condition)
-		--print(results.query.results.channel.item.forecast)
 
 		display_weather_icon({pos.x, pos.y}, 48, channel.item.condition.code)
 		display_weather_icon({pos.x + 12, pos.y + 50 }, 24, channel.item.forecast[2].code)
