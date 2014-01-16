@@ -440,28 +440,6 @@ end
 local _weather_icons = {}
 
 function display_weather_icon(pos, icon_size, code)
---	local code_to_img = {
---		[26] = "cloudy5",
---		[27] = "cloudy4_night",
---		[28] = "cloudy4",
---		[29] = "cloudy3_night",
---		[30] = "cloudy3",
---		[31] = "sunny_night",
---		[32] = "sunny",
---		[33] = "cloudy1_night",
---		[34] = "cloudy1"
---	}
---	local img, img_path, image, buffer
---
---	code = tonumber(code)
---
---	if code_to_img[code] then
---		img = code_to_img[code]
---	else
---		img = "dunno"
---		print(code)
---	end
-
 	if _weather_icons[code] == nil then
 		img_path = "/home/bnc/.conky/icons/weather_" .. code .. ".png"
 		_weather_icons[code] = imlib_load_image(img_path)
